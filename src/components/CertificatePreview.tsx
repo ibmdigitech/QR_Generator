@@ -81,10 +81,6 @@ export function CertificatePreview({
                     Copy QR Image
                   </button>
                 </div>
-                <div className="qr-print-text print-only">
-                  <strong>QR Payload:</strong>
-                  <pre>{qrData}</pre>
-                </div>
               </>
             ) : (
               <div className="qr-placeholder">
