@@ -148,7 +148,16 @@ function App() {
   };
 
   const handlePrint = () => {
-    window.print();
+    // Ensure QR is generated before printing so PDF includes the image
+    (async () => {
+      if (!isGenerated) {
+        const ok = await renderQRCode();
+        if (!ok) return;
+        // allow the DOM to update with the generated image
+        await new Promise((res) => setTimeout(res, 150));
+      }
+      window.print();
+    })();
   };
 
   const handleCopyQRPayload = async () => {
