@@ -154,7 +154,7 @@ function App() {
         const ok = await renderQRCode();
         if (!ok) return;
         // allow the DOM to update with the generated image
-        await new Promise((res) => setTimeout(res, 150));
+        await new Promise((res) => setTimeout(res, 500));
       }
       window.print();
     })();
