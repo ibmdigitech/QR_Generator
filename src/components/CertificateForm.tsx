@@ -5,9 +5,11 @@ interface Props {
   errors: Record<string, string>;
   suggestedCertificateNo: string;
   showMoreData: boolean;
+  qrPosition: 'top' | 'bottom' | 'left' | 'right';
   onToggleMoreData: () => void;
   onApplyNextCertificateNo: () => void;
   onChange: (field: keyof CertificateData, value: string) => void;
+  onChangeQRPosition: (value: 'top' | 'bottom' | 'left' | 'right') => void;
   onGenerate: () => void;
   onReset: () => void;
 }
@@ -19,9 +21,11 @@ export function CertificateForm({
   errors,
   suggestedCertificateNo,
   showMoreData,
+  qrPosition,
   onToggleMoreData,
   onApplyNextCertificateNo,
   onChange,
+  onChangeQRPosition,
   onGenerate,
   onReset,
 }: Props) {
@@ -74,7 +78,7 @@ export function CertificateForm({
         </label>
 
         <label>
-          <span>Location</span>
+          <span>Location <span style={{ fontWeight: 400, fontSize: '0.92rem', color: '#475569' }}>(optional)</span></span>
           <input
             value={certificate.location}
             onChange={(event) => onChange('location', event.target.value)}
@@ -124,6 +128,19 @@ export function CertificateForm({
                 {status}
               </option>
             ))}
+          </select>
+        </label>
+
+        <label>
+          <span>QR Placement</span>
+          <select
+            value={qrPosition}
+            onChange={(event) => onChangeQRPosition(event.target.value as 'top' | 'bottom' | 'left' | 'right')}
+          >
+            <option value="right">Right</option>
+            <option value="left">Left</option>
+            <option value="top">Top</option>
+            <option value="bottom">Bottom</option>
           </select>
         </label>
 

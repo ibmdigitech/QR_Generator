@@ -7,9 +7,11 @@ interface Props {
   qrImage: string;
   qrData: string;
   isGenerated: boolean;
+  qrPosition: 'top' | 'bottom' | 'left' | 'right';
   showQRDebug: boolean;
   onToggleDebug: () => void;
-  onCopyQRData: () => void;
+  onCopyQRPayload: () => void;
+  onCopyQRCodeImage: () => void;
 }
 
 export function CertificatePreview({
@@ -17,9 +19,11 @@ export function CertificatePreview({
   qrImage,
   qrData,
   isGenerated,
+  qrPosition,
   showQRDebug,
   onToggleDebug,
-  onCopyQRData,
+  onCopyQRPayload,
+  onCopyQRCodeImage,
 }: Props) {
   return (
     <section className="preview-panel">
@@ -37,7 +41,7 @@ export function CertificatePreview({
           <p className="status-pill">Status: {certificate.status}</p>
         </header>
 
-        <div className="certificate-body">
+        <div className={`certificate-body qr-${qrPosition}`}>
           <dl>
             <div className="detail-item">
               <dt>Certificate No.</dt>
@@ -65,11 +69,27 @@ export function CertificatePreview({
             </div>
           </dl>
 
-          <div className="certificate-qr-section">
+          <div className={`certificate-qr-section qr-${qrPosition}`}>
             {isGenerated ? (
-              <QRCodeDisplay qrData={qrData} qrImage={qrImage} />
+              <>
+                <QRCodeDisplay qrImage={qrImage} />
+                <div className="qr-actions">
+                  <button type="button" className="secondary-button" onClick={onCopyQRPayload}>
+                    Copy QR Data
+                  </button>
+                  <button type="button" className="secondary-button" onClick={onCopyQRCodeImage}>
+                    Copy QR Image
+                  </button>
+                </div>
+                <div className="qr-print-text print-only">
+                  <strong>QR Payload:</strong>
+                  <pre>{qrData}</pre>
+                </div>
+              </>
             ) : (
-              <div className="qr-placeholder">Generate the certificate to show the QR code.</div>
+              <div className="qr-placeholder">
+                Click "Generate Certificate" first to display the QR code and copy controls.
+              </div>
             )}
           </div>
         </div>
@@ -84,9 +104,14 @@ export function CertificatePreview({
           <h3>QR Data Preview</h3>
           <p>The exact data encoded inside this QR:</p>
           <textarea readOnly value={qrData} className="qr-debug-textarea" />
-          <button type="button" className="ghost-button" onClick={onCopyQRData}>
-            Copy QR Data
-          </button>
+          <div className="qr-debug-actions">
+            <button type="button" className="ghost-button" onClick={onCopyQRPayload}>
+              Copy QR Data
+            </button>
+            <button type="button" className="ghost-button" onClick={onCopyQRCodeImage}>
+              Copy QR Image
+            </button>
+          </div>
         </div>
       )}
     </section>

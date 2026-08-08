@@ -16,7 +16,6 @@ export const buildCertificateQRData = (certificate: CertificateData) => {
     `Certificate No: ${certificate.certificateNo || ''}`,
     `Name: ${certificate.name || ''}`,
     `Company: ${certificate.company || ''}`,
-    `Location: ${certificate.location || ''}`,
     `Certificate Type: ${certificate.certificateType || ''}`,
     `Issue Date: ${formatDate(certificate.issueDate)}`,
     `Expiry Date: ${formatDate(certificate.expiryDate)}`,
@@ -35,7 +34,6 @@ export const isCertificateDataValid = (certificate: CertificateData) => {
     Boolean(certificate.certificateNo.trim()) &&
     Boolean(certificate.name.trim()) &&
     Boolean(certificate.company.trim()) &&
-    Boolean(certificate.location.trim()) &&
     Boolean(certificate.certificateType.trim()) &&
     Boolean(certificate.issueDate.trim()) &&
     Boolean(certificate.expiryDate.trim())
@@ -44,7 +42,12 @@ export const isCertificateDataValid = (certificate: CertificateData) => {
 
 export const hasCertificateDataUrl = (payload: string) => {
   const lowered = payload.toLowerCase();
-  return lowered.includes('http://') || lowered.includes('https://') || lowered.includes('www.');
+  return (
+    lowered.includes('http://') ||
+    lowered.includes('https://') ||
+    lowered.includes('www.') ||
+    lowered.includes('localhost:')
+  );
 };
 
 export const incrementCertificateNumber = (value: string) => {

@@ -1,26 +1,9 @@
 import { CertificateData } from '../types/certificate';
-
-const buildShareText = (certificate: CertificateData) => {
-  const lines = [
-    'CERTIFICATE',
-    `Certificate No: ${certificate.certificateNo}`,
-    `Name: ${certificate.name}`,
-    `Company: ${certificate.company}`,
-    `Certificate Type: ${certificate.certificateType}`,
-    `Issue Date: ${certificate.issueDate}`,
-    `Expiry Date: ${certificate.expiryDate}`,
-    `Status: ${certificate.status}`,
-  ];
-
-  if (certificate.additionalDetails.trim()) {
-    lines.push(`Additional Details: ${certificate.additionalDetails.trim()}`);
-  }
-
-  return lines.join('\n');
-};
+import { buildCertificateQRData } from './certificate';
 
 export const shareCertificate = async (certificate: CertificateData) => {
-  const shareText = buildShareText(certificate);
+  const shareText = buildCertificateQRData(certificate);
+
   if (navigator.share) {
     try {
       await navigator.share({
@@ -28,11 +11,18 @@ export const shareCertificate = async (certificate: CertificateData) => {
         text: shareText,
       });
       return { success: true };
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.name === 'AbortError') {
+        return { success: false, cancelled: true };
+      }
       return { success: false, message: 'Share cancelled or unavailable.' };
     }
   }
 
-  await navigator.clipboard.writeText(shareText);
-  return { success: true, fallback: true };
+  try {
+    await navigator.clipboard.writeText(shareText);
+    return { success: true, fallback: true };
+  } catch {
+    return { success: false, message: 'Clipboard copy failed.' };
+  }
 };

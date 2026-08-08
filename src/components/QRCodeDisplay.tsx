@@ -1,9 +1,8 @@
 interface Props {
-  qrData: string;
   qrImage: string;
 }
 
-export function QRCodeDisplay({ qrData, qrImage }: Props) {
+export function QRCodeDisplay({ qrImage }: Props) {
   return (
     <div className="qr-panel">
       <div className="qr-container">

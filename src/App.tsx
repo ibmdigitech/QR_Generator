@@ -24,6 +24,7 @@ function App() {
   const [shareStatus, setShareStatus] = useState('');
   const [showQRDebug, setShowQRDebug] = useState(false);
   const [showMoreData, setShowMoreData] = useState(false);
+  const [qrPosition, setQrPosition] = useState<'top' | 'bottom' | 'left' | 'right'>('right');
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -40,6 +41,12 @@ function App() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(certificate));
   }, [certificate]);
+
+  useEffect(() => {
+    document.title = certificate.certificateNo?.trim()
+      ? `${certificate.certificateNo} - QR Certificate`
+      : 'QR Certificate Generator V2';
+  }, [certificate.certificateNo]);
 
   const qrData = useMemo(() => buildCertificateQRData(certificate), [certificate]);
   const suggestedCertificateNo = useMemo(
@@ -90,7 +97,6 @@ function App() {
     if (!certificate.certificateNo.trim()) fieldErrors.certificateNo = 'Certificate number is required.';
     if (!certificate.name.trim()) fieldErrors.name = 'Name is required.';
     if (!certificate.company.trim()) fieldErrors.company = 'Company is required.';
-    if (!certificate.location.trim()) fieldErrors.location = 'Location is required.';
     if (!certificate.certificateType.trim()) fieldErrors.certificateType = 'Certificate type is required.';
     if (!certificate.issueDate.trim()) fieldErrors.issueDate = 'Issue date is required.';
     if (!certificate.expiryDate.trim()) fieldErrors.expiryDate = 'Expiry date is required.';
@@ -124,6 +130,7 @@ function App() {
     setErrorMessage('');
     setShareStatus('');
     setShowMoreData(false);
+    setQrPosition('right');
   };
 
   const handleShare = async () => {
@@ -132,6 +139,8 @@ function App() {
       setShareStatus('Certificate data copied successfully.');
     } else if (result.success) {
       setShareStatus('Certificate ready to share.');
+    } else if (result.cancelled) {
+      setShareStatus('Share dialog closed.');
     } else {
       setShareStatus(result.message || 'Unable to share certificate.');
     }
@@ -142,9 +151,43 @@ function App() {
     window.print();
   };
 
-  const handleCopyQRData = async () => {
+  const handleCopyQRPayload = async () => {
+    try {
+      await navigator.clipboard.writeText(qrData);
+      setShareStatus('QR data copied to clipboard.');
+    } catch {
+      setShareStatus('Failed to copy QR data.');
+    }
+    setTimeout(() => setShareStatus(''), 3000);
+  };
+
+  const handleCopyQRCodeImage = async () => {
+    if (!qrImage) return;
+
+    try {
+      const mimeMatch = qrImage.match(/^data:(.*?);base64,/);
+      const mimeType = mimeMatch?.[1] ?? 'image/png';
+      const base64Data = qrImage.split(',')[1] || '';
+      const binary = atob(base64Data);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i += 1) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: mimeType });
+      const ClipboardItemConstructor = (window as any).ClipboardItem;
+
+      if (navigator.clipboard && ClipboardItemConstructor) {
+        await navigator.clipboard.write([new ClipboardItemConstructor({ [mimeType]: blob })]);
+        setShareStatus('QR image copied to clipboard.');
+        setTimeout(() => setShareStatus(''), 3000);
+        return;
+      }
+    } catch {
+      // Fallback to copying payload text if image copy is unavailable.
+    }
+
     await navigator.clipboard.writeText(qrData);
-    setShareStatus('QR data copied successfully.');
+    setShareStatus('QR payload copied to clipboard.');
     setTimeout(() => setShareStatus(''), 3000);
   };
 
@@ -156,9 +199,11 @@ function App() {
           errors={errors}
           suggestedCertificateNo={suggestedCertificateNo}
           showMoreData={showMoreData}
+          qrPosition={qrPosition}
           onToggleMoreData={() => setShowMoreData((current) => !current)}
           onApplyNextCertificateNo={applyNextCertificateNumber}
           onChange={handleChange}
+          onChangeQRPosition={(value) => setQrPosition(value)}
           onGenerate={handleGenerate}
           onReset={handleReset}
         />
@@ -169,8 +214,10 @@ function App() {
           qrData={qrData}
           isGenerated={isGenerated}
           showQRDebug={showQRDebug}
+          qrPosition={qrPosition}
           onToggleDebug={() => setShowQRDebug((current) => !current)}
-          onCopyQRData={handleCopyQRData}
+          onCopyQRPayload={handleCopyQRPayload}
+          onCopyQRCodeImage={handleCopyQRCodeImage}
         />
       </main>
 

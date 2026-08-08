@@ -15,11 +15,13 @@ html,
 body,
 #root {
   min-height: 100%;
+  width: 100%;
 }
 
 body {
   margin: 0;
   background: linear-gradient(180deg, #f5fbfb 0%, #ffffff 100%);
+  color: #334155;
 }
 
 button,
@@ -34,6 +36,7 @@ button {
 }
 
 .app-shell {
+  width: 100%;
   max-width: 1440px;
   margin: 0 auto;
   padding: 24px;
@@ -44,6 +47,186 @@ button {
   grid-template-columns: minmax(0, 420px) minmax(320px, 1fr);
   gap: 24px;
   align-items: start;
+  width: 100%;
+  min-width: 0;
+}
+
+.form-panel,
+.preview-panel,
+.certificate-card,
+.field-grid,
+.certificate-body,
+.qr-container {
+  min-width: 0;
+}
+
+.form-panel,
+.preview-panel {
+  width: 100%;
+  max-width: 100%;
+}
+
+.link-button {
+  background: transparent;
+  border: none;
+  color: #166d7d;
+  padding: 0;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.qr-debug-actions,
+.qr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.qr-placeholder {
+  width: 100%;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #f8fafc;
+  border-radius: 24px;
+  text-align: center;
+  color: #475569;
+}
+
+.print-only {
+  display: none;
+}
+
+.qr-print-text {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px solid rgba(6, 59, 63, 0.08);
+}
+
+.qr-print-text pre {
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 960px) {
+  .page-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-body {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-qr-section {
+    justify-content: center;
+  }
+
+  .action-row {
+    justify-content: center;
+  }
+}
+.certificate-body {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr 220px;
+}
+
+.certificate-body.qr-left {
+  grid-template-columns: 220px 1fr;
+}
+
+.certificate-body.qr-right {
+  grid-template-columns: 1fr 220px;
+}
+
+.certificate-body.qr-top,
+.certificate-body.qr-bottom {
+  grid-template-columns: 1fr;
+}
+
+.certificate-qr-section {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+.certificate-qr-section.qr-top {
+  order: -1;
+}
+
+.certificate-qr-section.qr-bottom {
+  order: 1;
+}
+
+.certificate-qr-section.qr-left,
+.certificate-qr-section.qr-right {
+  order: 0;
+}
+
+@media (max-width: 720px) {
+  .certificate-body,
+  .certificate-body.qr-left,
+  .certificate-body.qr-right {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-qr-section.qr-left,
+  .certificate-qr-section.qr-right,
+  .certificate-qr-section.qr-top,
+  .certificate-qr-section.qr-bottom {
+    width: 100%;
+  }
+}
+@media print {
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .app-shell {
+    padding: 0;
+  }
+
+  .form-panel,
+  .action-row,
+  .message-bar,
+  .preview-header,
+  .qr-debug-panel,
+  .panel-header {
+    display: none !important;
+  }
+
+  .preview-panel,
+  .certificate-card {
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+  }
+
+  .qr-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  .qr-image {
+    width: 200px !important;
+    height: 200px !important;
+    object-fit: contain !important;
+  }
 }
 
 .form-panel,
@@ -380,8 +563,13 @@ textarea {
   .secondary-button,
   .preview-header,
   .panel-header,
-  .qr-debug-panel {
+  .qr-debug-panel,
+  .qr-actions {
     display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
   }
 
   .preview-panel {

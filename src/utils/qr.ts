@@ -8,6 +8,6 @@ export const generateQRCode = async (text: string) => {
       dark: '#000000',
       light: '#FFFFFF',
     },
-    width: 200,
+    width: 600,
   });
 };
