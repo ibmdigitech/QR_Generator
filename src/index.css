@@ -82,8 +82,7 @@ button {
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
-  margin-top: 18px;
-  padding-top: 8px;
+  margin-top: 16px;
 }
 
 .qr-placeholder {
@@ -139,8 +138,8 @@ button {
 }
 .certificate-body {
   display: grid;
-  gap: 28px;
-  grid-template-columns: 1fr 240px;
+  gap: 24px;
+  grid-template-columns: 1fr 220px;
 }
 
 .certificate-body.qr-left {
@@ -158,11 +157,8 @@ button {
 
 .certificate-qr-section {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 18px;
-  padding-top: 6px;
+  align-items: start;
 }
 
 .certificate-qr-section.qr-top {
@@ -327,6 +323,8 @@ textarea {
   border-radius: 14px;
   padding: 14px 18px;
   font-weight: 700;
+  margin-top: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .primary-button {
@@ -347,6 +345,25 @@ textarea {
   background: transparent;
   color: #063b3f;
   border: 1px solid rgba(6, 59, 63, 0.12);
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.ghost-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(6, 59, 63, 0.14);
+}
+
+.primary-button:hover {
+  background: linear-gradient(135deg, #0a4d55 0%, #0f6b73 100%);
+}
+
+.secondary-button:hover {
+  background: linear-gradient(135deg, #f8ffff 0%, #e8f7f8 100%);
+}
+
+.ghost-button:hover {
+  background: linear-gradient(135deg, rgba(22, 109, 125, 0.08) 0%, rgba(42, 182, 167, 0.12) 100%);
 }
 
 .small-button {
@@ -370,7 +387,7 @@ textarea {
 
 .certificate-card {
   display: grid;
-  gap: 20px;
+  gap: 18px;
   padding: 28px;
   border-radius: 28px;
   background: linear-gradient(180deg, #f8ffff 0%, #ffffff 100%);
@@ -438,8 +455,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  width: 100%;
+  gap: 12px;
 }
 
 .qr-container {
