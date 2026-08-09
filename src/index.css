@@ -323,47 +323,54 @@ textarea {
   border-radius: 14px;
   padding: 14px 18px;
   font-weight: 700;
-  margin-top: 8px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  margin-top: 20px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: left center;
+  color: #063b3f;
+  transition: box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-position 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background-size 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .primary-button {
   width: 100%;
-  background: #063b3f;
+  background-image: linear-gradient(90deg, #063b3f 0%, #0a4d55 100%);
   color: #ffffff;
   box-shadow: 0 12px 30px rgba(9, 65, 67, 0.14);
 }
 
 .secondary-button {
-  background: #ffffff;
+  background-image: linear-gradient(90deg, #1a8a99 0%, #137a89 100%);
   border: 1px solid rgba(22, 109, 125, 0.18);
-  color: #063b3f;
+  color: #ffffff;
   min-width: 180px;
 }
 
 .ghost-button {
-  background: transparent;
-  color: #063b3f;
+  background-image: linear-gradient(90deg, #1a8a99 0%, #137a89 100%);
+  color: #ffffff;
   border: 1px solid rgba(6, 59, 63, 0.12);
 }
 
 .primary-button:hover,
 .secondary-button:hover,
 .ghost-button:hover {
-  transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(6, 59, 63, 0.14);
+  background-size: 200% 100%;
+  background-position: right center;
 }
 
 .primary-button:hover {
-  background: linear-gradient(135deg, #0a4d55 0%, #0f6b73 100%);
+  background-image: linear-gradient(90deg, #0a4d55 0%, #0f6b73 50%, #14b8a6 100%);
 }
 
 .secondary-button:hover {
-  background: linear-gradient(135deg, #f8ffff 0%, #e8f7f8 100%);
+  background-image: linear-gradient(90deg, #0c6067 0%, #146d77 50%, #1f8a8f 100%);
+  color: #f4fbfc;
 }
 
 .ghost-button:hover {
-  background: linear-gradient(135deg, rgba(22, 109, 125, 0.08) 0%, rgba(42, 182, 167, 0.12) 100%);
+  background-image: linear-gradient(90deg, rgba(8, 62, 69, 0.96) 0%, rgba(14, 96, 106, 0.96) 50%, rgba(25, 123, 134, 0.96) 100%);
+  color: #f4fbfc;
 }
 
 .small-button {
